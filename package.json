@@ -1,0 +1,13 @@
+{
+  "name": "projeto-final-mc7-qa",
+  "version": "1.0.0",
+  "description": "Automação de testes em Cypress - Projeto Final MC7",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^13.0.0",
+    "cypress-mochawesome-reporter": "^5.0.0"
+  }
+}

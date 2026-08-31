@@ -1,0 +1,27 @@
+# Dependências Node
+node_modules/
+package-lock.json
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+cypress/reports/
+
+# Arquivos de Ambiente (NÃO REMOVER ISSO DO GITIGNORE)
+# Protege credenciais de login e dados sensíveis usados nos testes
+.env
+.env.local
+cypress.env.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Relatórios Mochawesome
+cypress/reports/

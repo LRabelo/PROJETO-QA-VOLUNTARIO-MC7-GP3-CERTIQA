@@ -1,0 +1,30 @@
+name: Cypress Tests Push
+
+on: 
+  push:
+    branches: 
+      - master
+      - main
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+        env:
+          CYPRESS_USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          CYPRESS_USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+
+      - name: Upload Cypress Report
+        if: always() # Salva o relatório mesmo se os testes falharem
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-report-push
+          path: cypress/reports # Pasta padrão gerada pelo cypress-mochawesome-reporter
+          retention-days: 3
