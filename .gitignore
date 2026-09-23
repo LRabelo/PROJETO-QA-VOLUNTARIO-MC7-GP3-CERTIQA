@@ -24,3 +24,5 @@ Thumbs.db
 
 # Relatórios Mochawesome
 cypress/reports/
+
+_backup/
