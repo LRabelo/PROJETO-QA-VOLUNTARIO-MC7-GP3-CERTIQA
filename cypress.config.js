@@ -7,10 +7,13 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // 1. Ativa o plugin do relatório visual (Mochawesome)
       require('cypress-mochawesome-reporter/plugin')(on);
-      
+
       // 2. Injeta as senhas do arquivo .env para o Cypress reconhecer
       config.env.USER_EMAIL = process.env.USER_EMAIL;
       config.env.USER_PASSWORD = process.env.USER_PASSWORD;
+
+      config.env.LOCKED_USER_EMAIL = process.env.LOCKED_USER_EMAIL;
+      config.env.LOCKED_USER_PASSWORD = process.env.LOCKED_USER_PASSWORD;
 
       // Outras configurações e plugins (ex: cucumber-preprocessor) podem entrar aqui
       return config;

@@ -7,7 +7,7 @@ class ProgressoPage {
         btnProximaFaseRodape: () => cy.get('.space-y-4 > .inline-flex'),
         
         tituloFase: () => cy.get('.text-3xl'),
-        subtituloFase: () => cy.get('.flex-col > .text-2xl'),
+        subtituloFase: () => cy.get(':nth-child(1) > .text-gray-600'),
         indicadorProgresso: () => cy.get('.pt-0 > .grid > :nth-child(1) > .flex > .text-sm'),
         tagFaseConcluida: () => cy.contains('.inline-flex', 'Fase concluída', { matchCase: false }),
         
