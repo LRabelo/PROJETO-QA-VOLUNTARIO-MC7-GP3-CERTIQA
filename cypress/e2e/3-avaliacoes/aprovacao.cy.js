@@ -9,7 +9,7 @@ const telas = [
 ];
 
 telas.forEach((tela) => {
-    describe(`Resultados e Progresso - SCRUM-10 - ${tela.dispositivo}`, () => {
+    describe(`Aprovação - SCRUM-10 - ${tela.dispositivo}`, () => {
 
         beforeEach(() => {
             cy.viewport(tela.largura, tela.altura);
