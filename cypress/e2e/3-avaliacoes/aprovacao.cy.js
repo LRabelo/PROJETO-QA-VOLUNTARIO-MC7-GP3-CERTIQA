@@ -1,5 +1,5 @@
-import LoginPage from '../../support/pages/LoginPage';
-import ProgressoPage from '../../support/pages/ProgressoPage';
+import LoginPage from '../../support/pages/loginPage';
+import ProgressoPage from '../../support/pages/progressoPage';
 import AprovacaoPage from '../../support/pages/aprovacaoPage';
 
 const telas = [
