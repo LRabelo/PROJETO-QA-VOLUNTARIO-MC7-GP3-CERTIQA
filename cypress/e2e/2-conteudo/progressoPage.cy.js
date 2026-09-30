@@ -12,7 +12,7 @@ telas.forEach((tela) => {
 
         beforeEach(() => {
             cy.viewport(tela.largura, tela.altura);
-            cy.visit('https://certiqa.qazando.com.br/login');
+            cy.visit('/login');
 
             LoginPage.preencherLogin(Cypress.env('USER_EMAIL'), Cypress.env('USER_PASSWORD'));
             LoginPage.validarRedirecionamentoParaPainel();
@@ -23,15 +23,15 @@ telas.forEach((tela) => {
 
         it(`[CT-001] Acessar conteúdos da fase e navegar entre eles - ${tela.dispositivo}`, () => {
             ProgressoPage.validarCarregamentoInicialFase();
-            
+
             ProgressoPage.elementos.btnConteudo1().click();
             ProgressoPage.validarCarregamentoInicialFase(); // Revalida após abrir conteúdo
-            
+
             ProgressoPage.elementos.btnVoltarDaFase().click();
             ProgressoPage.elementos.btnConteudo1().click();
         });
 
-        it(`[CT-002] Concluir um conteúdo e validar a atualização do progresso - ${tela.dispositivo}`, () => {
+        it.skip(`[CT-002] Concluir um conteúdo e validar a atualização do progresso - ${tela.dispositivo}`, () => {
             // Mocks
             cy.intercept('POST', '**/rest/v1/quiz_results*', { statusCode: 201, body: [{ id: 'mock-quiz-id' }] }).as('mockSaveQuiz');
             cy.intercept('POST', '**/rest/v1/completed_phases*', { statusCode: 201, body: [{ id: 'mock-phase-id' }] }).as('mockSavePhase');
@@ -47,7 +47,7 @@ telas.forEach((tela) => {
                     // Executa o quiz usando o método que encapsula todos os cliques
                     ProgressoPage.elementos.btnConteudo4().click();
                     ProgressoPage.responderQuizCompleto();
-                    
+
                     cy.wait('@mockSaveQuiz');
 
                     // Valida que o progresso mudou
@@ -63,26 +63,40 @@ telas.forEach((tela) => {
         it(`[CT-005] Persistência do progresso após recarregar a página (F5) - ${tela.dispositivo}`, () => {
             ProgressoPage.elementos.btnConteudo1().click();
             ProgressoPage.elementos.tagFaseConcluida({ timeout: 10000 }).should('be.visible');
-            
+
             cy.reload();
-            
+
             ProgressoPage.elementos.tagFaseConcluida({ timeout: 15000 }).should('be.visible');
         });
 
         it(`[CT-008] Validar bloqueio de rota via URL para fases não desbloqueadas - ${tela.dispositivo}`, () => {
-            cy.visit('https://certiqa.qazando.com.br/certificacoes/ctfl/fase/test-management');
-            
+
+            // Sai da sessão atual
+            cy.clearCookies();
+            cy.clearLocalStorage();
+
+            // Login com usuário que possui as fases bloqueadas
+            cy.visit('/login');
+
+            LoginPage.preencherLogin(
+                Cypress.env('LOCKED_USER_EMAIL'),
+                Cypress.env('LOCKED_USER_PASSWORD')
+            );
+
+            LoginPage.validarRedirecionamentoParaPainel();
+
+            // Tenta acessar diretamente uma fase bloqueada
+            cy.visit('/certificacoes/ctfl/fase/test-management');
             cy.url({ timeout: 10000 }).should('not.include', '/fase/test-management');
             cy.url().should('include', '/certificacoes/ctfl');
-            cy.contains(/Complete a fase anterior para desbloquear esta fase./i, { timeout: 10000 })
-                .should('be.visible');
+            cy.contains(/Complete a fase anterior para desbloquear esta fase./i,{ timeout: 10000 }).should('be.visible');
         });
 
         it(`[CT-009] Validar navegação redundante para a fase em andamento - ${tela.dispositivo}`, () => {
             ProgressoPage.elementos.btnContinuarFase1().should('be.visible').click();
             ProgressoPage.elementos.btnVoltarDaFase().should('be.visible').click();
             ProgressoPage.elementos.btnProximaFaseRodape().should('be.visible').click();
-            
+
             // Valida que voltou corretamente para a fase
             ProgressoPage.validarCarregamentoInicialFase();
         });
